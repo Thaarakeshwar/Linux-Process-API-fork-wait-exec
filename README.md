@@ -26,7 +26,7 @@ Test the C Program for the desired output.
 ## C Program to create new process using Linux API system calls fork() and getpid() , getppid() and to print process ID and parent Process ID using Linux API system calls
 
 vi process.c
-
+```
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/types.h>
@@ -63,7 +63,7 @@ int main()
     
     return 0;
 }
-
+```
 gcc process.c -o process
 
 ./process
@@ -74,7 +74,7 @@ gcc process.c -o process
 ## C Program to execute Linux system commands using Linux API system calls exec() , exit() , wait() family
 
 nano process.c
-
+```
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/wait.h>
@@ -108,7 +108,7 @@ int main()
     
     return 0;
 }
-
+```
 gcc process.c -o process
 
 ls -l process
