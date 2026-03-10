@@ -25,98 +25,73 @@ Test the C Program for the desired output.
 
 ## C Program to create new process using Linux API system calls fork() and getpid() , getppid() and to print process ID and parent Process ID using Linux API system calls
 
-vi process.c
+nano forkcheck.c
+
 ```
 #include <stdio.h>
-#include <unistd.h>
 #include <sys/types.h>
-#include <sys/wait.h>
+#include <unistd.h>
+int main(void)
+{	//variable to store calling function's process id
+	pid_t process_id;
+	//variable to store parent function's process id
+	pid_t p_process_id;
+	//getpid() - will return process id of calling function
+	process_id = getpid();
+	//getppid() - will return process id of parent function
+	p_process_id = getppid();
+	//printing the process ids
 
-int main()
-{
-    pid_t pid;
-    
-    printf("Original Process PID: %d\n", getpid());
-    
-    pid = fork();
-    
-    if (pid < 0) {
-        printf("Fork failed!\n");
-        return 1;
-    }
-    else if (pid == 0) {
-        // Child process
-        printf("\nCHILD PROCESS:\n");
-        printf("My PID = %d\n", getpid());
-        printf("My Parent PID = %d\n", getppid());
-        printf("Child executing...\n");
-    }
-    else {
-        // Parent process
-        printf("\nPARENT PROCESS:\n");
-        printf("My PID = %d\n", getpid());
-        printf("Child PID = %d\n", pid);
-        printf("Parent waiting for child...\n");
-        wait(NULL);
-        printf("Child finished, parent exiting...\n");
-    }
-    
-    return 0;
+//printing the process ids
+	printf("The process id: %d\n",process_id);
+	printf("The process id of parent function: %d\n",p_process_id);
+	return 0; 
 }
 ```
-gcc process.c -o process
+gcc forkcheck.c -o forkcheck.o
 
-./process
+chmod 755 forkcheck.o
+
+./forkcheck.o
 
 ## OUTPUT 
-![Alt text](process.png)
+
+![Alt text](forcheck.png)
 
 ## C Program to execute Linux system commands using Linux API system calls exec() , exit() , wait() family
 
-nano process.c
+## OUTPUT
+
+nano exitwait.c
 ```
 #include <stdio.h>
-#include <unistd.h>
+#include <stdlib.h>
 #include <sys/wait.h>
+#include <unistd.h>
 
-int main()
-{
-    pid_t pid;
+int main() {
     int status;
     
-    printf("Parent process (PID: %d) started\n", getpid());
-    
-    pid = fork();
-    
-    if (pid < 0) {
-        printf("Fork failed!\n");
-        return 1;
+    printf("Running ps with execlp\n");
+    if (fork() == 0) {
+        execlp("ps", "ps", "-f", NULL);
+        exit(1);
     }
-    else if (pid == 0) {
-        // Child process
-        printf("Child process (PID: %d) executing 'ls' command...\n", getpid());
-        execl("/bin/ls", "ls", "-l", NULL);
-        printf("exec() failed!\n");
-        return 1;
-    }
-    else {
-        // Parent process
-        printf("Parent waiting for child (PID: %d) to complete...\n", pid);
-        wait(&status);
-        printf("Child process completed. Parent exiting.\n");
-    }
+    wait(&status);
     
+    printf("Done.\n");
     return 0;
 }
 ```
-gcc process.c -o process
+gcc exitwait.c -o exitwait.o
 
-ls -l process
+chmod 755 exitwait.o
 
-./process
+./exitwait.o
 
 ## OUTPUT
-![Alt text](system_commands.png)
+
+![Alt text](exitwait.png)
 
 ## RESULT:
 The programs are executed successfully.
